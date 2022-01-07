@@ -5,8 +5,14 @@ import './index.css';
 function Square(props) {
   return (
     <button className="square" onClick={props.onClick}>
-      {props.value}
+      <Circle bgColor={props.color}/> 
     </button>
+  )
+}
+
+function Circle(props) {
+  return (
+    <div className="circle" style={{backgroundColor: props.bgColor}}></div>
   );
 }
   
@@ -15,26 +21,65 @@ function Square(props) {
         super(props);
         this.state = {
           squares: Array(42).fill(null),
-          xIsNext: true,
+          redIsNext: true,
         };
       }
     
+    findBottomSquare(index) {
+      // Returns the number square that is the lowest valid move
+      // in the same column as the given index.
+      // Returns null if there are no valid squares in the column.
+
+      const bottomRow = [35, 36, 37, 38, 39, 40, 41];
+      const columnIndex = index % 7;
+      let bottomSquare = bottomRow[columnIndex]; // bottom square of the col
+
+      // check from bottom up for an empty square
+      while (bottomSquare >= 0) {
+        if (!this.state.squares[bottomSquare]) {
+          return bottomSquare;
+        }
+        bottomSquare -= 7;
+      }
+
+      // return null if no other square in the column is empty
+      return null;
+    }
+
     handleClick(i){
       const squares = this.state.squares.slice();
-      if (calculateWinner(squares) || squares[i]){
+      if (calculateWinner(squares)) {
         return;
       }
-      squares[i] = this.state.xIsNext ? 'X' : 'O';
+
+      const bottomSquare = this.findBottomSquare(i);
+      if (bottomSquare != 0 && !bottomSquare) {
+        return;
+      }
+
+      squares[bottomSquare] = this.state.redIsNext ? 'Red' : 'Yellow';
       this.setState({
         squares: squares,
-        xIsNext: !this.state.xIsNext,
+        redIsNext: !this.state.redIsNext,
       });
     }
 
     renderSquare(i) {
-      return <Square 
-      value={this.state.squares[i]}
-      onClick={()=> this.handleClick(i)}/>;
+      const square = this.state.squares[i];
+      let color;
+      if (square == 'Red') {
+        color = '#F01E22';
+      } else if (square == 'Yellow') {
+        color = '#FAF055';
+      } else {
+        color = '#FFFFFF'
+      }
+
+      return (
+        <Square
+        color={color}
+        onClick={()=> this.handleClick(i)}/>
+      );
     }
   
     render() {
@@ -44,7 +89,7 @@ function Square(props) {
         status = 'Winner: ' + winner;
       }
       else{
-        status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
+        status = 'Next player: ' + (this.state.redIsNext ? 'Red' : 'Yellow');
       }
   
       return (
