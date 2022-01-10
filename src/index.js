@@ -25,6 +25,12 @@ function Circle(props) {
         };
       }
     
+    resetBoard = () => {
+      this.setState({
+        squares: Array(42).fill(null),
+        redIsNext: true, })
+    }
+    
     findBottomSquare(index) {
       // Returns the number square that is the lowest valid move
       // in the same column as the given index.
@@ -46,14 +52,14 @@ function Circle(props) {
       return null;
     }
 
-    handleClick(i){
+    handleClick(i) {
       const squares = this.state.squares.slice();
       if (calculateWinner(squares)) {
         return;
       }
 
       const bottomSquare = this.findBottomSquare(i);
-      if (bottomSquare != 0 && !bottomSquare) {
+      if (bottomSquare !== 0 && !bottomSquare) {
         return;
       }
 
@@ -67,9 +73,9 @@ function Circle(props) {
     renderSquare(i) {
       const square = this.state.squares[i];
       let color;
-      if (square == 'Red') {
+      if (square === 'Red') {
         color = '#F01E22';
-      } else if (square == 'Yellow') {
+      } else if (square === 'Yellow') {
         color = '#FAF055';
       } else {
         color = '#FFFFFF'
@@ -96,6 +102,9 @@ function Circle(props) {
         <div>
           <div className="title">{"Connect 4"}</div>
           <div className="status">{status}</div>
+          <button className="reset" onClick={this.resetBoard}>
+            Reset
+          </button>
           <div className="board-row">
             {this.renderSquare(0)}
             {this.renderSquare(1)}
@@ -171,24 +180,98 @@ function Circle(props) {
     }
   }
 
-  function calculateWinner(squares) {
-    const lines = [
-      [0, 1, 2],
-      [3, 4, 5],
-      [6, 7, 8],
-      [0, 3, 6],
-      [1, 4, 7],
-      [2, 5, 8],
-      [0, 4, 8],
-      [2, 4, 6],
-    ];
-    for (let i = 0; i < lines.length; i++) {
-      const [a, b, c] = lines[i];
-      if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-        return squares[a];
+  function winnerHorizontal(squares) {
+    let ind;
+    for (let i = 0; i < 6; i++){
+      for (let j = 0; j < 4; j++){
+        ind = j + (7*i);
+        if (squares[ind] && squares[ind] === squares[ind+1] && squares[ind] === squares[ind+2] 
+          && squares[ind] === squares[ind+3]){
+          return squares[ind];
+        }
       }
     }
     return null;
+  }
+
+  function winnerVertical(squares) {
+    const arr = [];
+    for(let i = 0; i < 7; i++){
+      const sub_arr = [];
+      for(let j = i; j < 42; j = j + 7){
+        sub_arr.push(j);
+      }
+      arr.push(sub_arr);
+    }
+    for (let i = 0; i<arr.length; i++){
+      for (let ind = 0; ind < 3; ind++){
+        const check = squares[arr[i][ind]];
+        if (check && check === squares[arr[i][ind+1]] && check === squares[arr[i][ind+2]] && check === squares[arr[i][ind+3]]){
+          return check;
+        }
+      }
+    }
+    return null;
+  }
+
+  function winnerDiagonal(squares) {
+    const notInForward = [0, 1, 2, 7, 8, 14, 27, 33, 34, 39, 40, 41];
+    const startingForward = [3, 4, 5, 6, 13, 20];
+    const forward_arr = [];
+
+    const notInBackward = [4, 5, 6, 12, 13, 20, 21, 28, 29, 35, 36, 37];
+    const startingBackward = [14, 7, 0, 1, 2, 3];
+    const backward_arr = [];
+
+    for (let i = 0; i < startingForward.length; i++) {
+      const forward_sub_arr = [];
+      const backward_sub_arr = [];
+      for (let j = startingForward[i]; j < 39; j = j + 6) {
+        if (!notInForward.includes(j)) {
+          forward_sub_arr.push(j)
+        }
+      }
+      for (let j = startingBackward[i]; j < 42; j = j + 8) {
+        if (!notInBackward.includes(j)) {
+          backward_sub_arr.push(j)
+        }
+      }
+      forward_arr.push(forward_sub_arr);
+      backward_arr.push(backward_sub_arr);
+    }
+   
+    for (let ind = 0; ind < forward_arr.length; ind++) {
+      const forward_bound = forward_arr[ind].length - 4;
+      const backward_bound = backward_arr[ind].length - 4;
+      for (let i = 0; i <= forward_bound; i++) {
+        const fcheck = squares[forward_arr[ind][i]];
+        if (fcheck && fcheck === squares[forward_arr[ind][i+1]] && fcheck === squares[forward_arr[ind][i+2]] && fcheck === squares[forward_arr[ind][i+3]]){
+          
+          return fcheck;
+        }
+      }
+      for (let i = 0; i <= backward_bound; i++) {
+        const bcheck = squares[backward_arr[ind][i]];
+        if (bcheck && bcheck === squares[backward_arr[ind][i+1]] && bcheck === squares[backward_arr[ind][i+2]] && bcheck === squares[backward_arr[ind][i+3]]){
+          return bcheck;
+        } 
+      }
+    }
+   return null;
+  }
+
+  function calculateWinner(squares) {
+    let winner;
+    if (winnerHorizontal(squares)){
+      winner = winnerHorizontal(squares);
+    }
+    if (winnerVertical(squares)){
+      winner = winnerVertical(squares);
+    }
+    if (winnerDiagonal(squares)) {
+      winner = winnerDiagonal(squares);
+    }
+    return winner;
   }
   
   // ========================================
