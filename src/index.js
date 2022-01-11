@@ -151,7 +151,7 @@ function Circle(props) {
         <div>
           <div className="title">{"Connect 4"}</div>
           <div className="status">{status}</div>
-          <button className="reset" onClick={this.resetBoard} size="Large">
+          <button className="reset" onClick={this.resetBoard}>
             Reset
           </button>
           <div><br></br></div>
