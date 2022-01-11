@@ -4,7 +4,10 @@ import './index.css';
 
 function Square(props) {
   return (
-    <button className="square" onClick={props.onClick}>
+    <button className="square" 
+    onClick={props.onClick} 
+    onMouseEnter={props.onMouseEnter} 
+    onMouseLeave={props.onMouseLeave}>
       <Circle bgColor={props.color}/> 
     </button>
   )
@@ -22,13 +25,16 @@ function Circle(props) {
         this.state = {
           squares: Array(42).fill(null),
           redIsNext: true,
+          hoverSquare: null,
         };
       }
     
     resetBoard = () => {
       this.setState({
         squares: Array(42).fill(null),
-        redIsNext: true, })
+        redIsNext: true,
+        hoverSquare: null,
+      })
     }
     
     findBottomSquare(index) {
@@ -63,10 +69,33 @@ function Circle(props) {
         return;
       }
 
+      let newBottomSquare = bottomSquare - 7;
+      if (newBottomSquare < 0) {
+        newBottomSquare = null;
+      }
+
       squares[bottomSquare] = this.state.redIsNext ? 'Red' : 'Yellow';
       this.setState({
         squares: squares,
         redIsNext: !this.state.redIsNext,
+        hoverSquare: newBottomSquare,
+      });
+    }
+
+    onMouseEnter(i) {
+      const bottomSquare = this.findBottomSquare(i);
+      if (bottomSquare !== 0 && !bottomSquare) {
+        return;
+      }
+
+      this.setState({
+        hoverSquare: bottomSquare,
+      });
+    }
+
+    onMouseLeave() {
+      this.setState({
+        hoverSquare: null,
       });
     }
 
@@ -78,13 +107,24 @@ function Circle(props) {
       } else if (square === 'Yellow') {
         color = '#FAF055';
       } else {
-        color = '#FFFFFF'
+        color = '#FFFFFF';
+      }
+
+      if (this.state.hoverSquare === i) {
+        if (this.state.redIsNext) {
+          color = '#D21FAA'; // Red hover
+        } else {
+          color = '#D2A11F'; // Yellow hover
+        }
       }
 
       return (
         <Square
         color={color}
-        onClick={()=> this.handleClick(i)}/>
+        onClick={()=> this.handleClick(i)}
+        onMouseEnter={()=> this.onMouseEnter(i)}
+        onMouseLeave={()=> this.onMouseLeave()}
+        />
       );
     }
   
@@ -102,9 +142,10 @@ function Circle(props) {
         <div>
           <div className="title">{"Connect 4"}</div>
           <div className="status">{status}</div>
-          <button className="reset" onClick={this.resetBoard}>
+          <button className="reset" onClick={this.resetBoard} size="Large">
             Reset
           </button>
+          <div><br></br></div>
           <div className="board-row">
             {this.renderSquare(0)}
             {this.renderSquare(1)}

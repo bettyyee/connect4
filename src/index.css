@@ -1,16 +1,22 @@
+html {
+  display: table;
+  margin: auto;
+}
+
 body {
-  font: 14px "Century Gothic", Futura, sans-serif;
-  margin: 20px;
+  font: 25px "Century Gothic", Futura, sans-serif;
+  margin: auto;
 }
 
 ol, ul {
-  padding-left: 30px;
+  padding-right: 30px;
 }
 
 .board-row:after {
   clear: both;
   content: "";
   display: table;
+  /* align-items: center; */
 }
 
 .status {
@@ -57,5 +63,7 @@ ol, ul {
 }
 
 .game-info {
-  margin-left: 20px;
+  /* margin-left: 40px;
+   */
+   margin: auto;
 }
