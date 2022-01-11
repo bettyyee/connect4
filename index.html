@@ -54,8 +54,10 @@ function Circle(props) {
 
     displayInstructions = () => {
       var x = document.getElementById("instructions");
+      document.getElementById("instructions").style.fontSize = "medium";
+      document.getElementById("instructions").style.width = "500px";
       if (x.innerHTML === "") {
-        x.innerHTML = "Instructions for Connect 4";
+        x.innerHTML = "Connect 4 is a two player game. Each player will take turns to try to stack four pieces of their color together.\n Once four pieces of one color are together, that player has won.";
       } else {
         x.innerHTML = "";
       }
