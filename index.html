@@ -3,7 +3,7 @@
   <head>
     <link rel="stylesheet" href="src/index.css">
     <meta charset="UTF-8" />
-    <title>Hello World</title>
+    <title>Bettily Connect 4</title>
     <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
 
@@ -11,7 +11,11 @@
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   </head>
   <body>
-    <div id="root"></div>
+    <div>
+      <!-- <h2 align="center">Connect 4</h2> -->
+      <!-- <h3>Created by Betty Yee & Emily Ma</h1> -->
+    </div>
+    <div id="root" align="center"></div>
     <script type="text/babel">
       function Square(props) {
   return (
@@ -160,7 +164,7 @@ function Circle(props) {
   
       return (
         <div>
-          <div className="title">{"Connect 4"}</div>
+          <h2>Connect 4</h2>
           <div className="status">{status}</div>
           <button className="reset" onClick={this.resetBoard} size="Large">
             Reset

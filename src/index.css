@@ -8,9 +8,9 @@ body {
   margin: auto;
 }
 
-ol, ul {
+/* ol, ul {
   padding-right: 30px;
-}
+} */
 
 .board-row:after {
   clear: both;
