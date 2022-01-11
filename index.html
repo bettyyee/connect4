@@ -51,6 +51,15 @@ function Circle(props) {
         hoverSquare: null,
       })
     }
+
+    displayInstructions = () => {
+      var x = document.getElementById("instructions");
+      if (x.innerHTML === "") {
+        x.innerHTML = "Instructions for Connect 4";
+      } else {
+        x.innerHTML = "";
+      }
+    }
     
     findBottomSquare(index) {
       // Returns the number square that is the lowest valid move
@@ -166,10 +175,13 @@ function Circle(props) {
         <div>
           <div className="title">{"Connect 4"}</div>
           <div className="status">{status}</div>
+          <button className="instructions" onClick={this.displayInstructions} size="Large">
+            Instructions
+          </button>
           <button className="reset" onClick={this.resetBoard} size="Large">
             Reset
           </button>
-          <div><br></br></div>
+          <p id="instructions"></p>
           <div className="board-row">
             {this.renderSquare(0)}
             {this.renderSquare(1)}
