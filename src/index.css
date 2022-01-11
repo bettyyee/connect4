@@ -1,5 +1,5 @@
 body {
-  font: 14px "Century Gothic", Futura, sans-serif;
+  font: 25px "Century Gothic", Futura, sans-serif;
   margin: 20px;
 }
 
@@ -24,12 +24,12 @@ ol, ul {
   /* font-size: 24px;
   font-weight: bold;
   line-height: 34px; */
-  height: 34px;
+  height: 75px;
   margin-right: -1px;
   margin-top: -1px;
   padding: 0;
   /* text-align: center; */
-  width: 34px;
+  width: 75px;
 }
 
 .square:focus {
@@ -38,13 +38,13 @@ ol, ul {
 
 .circle {
     /* //   // padding: 10, */
-  margin: 4px;
+  margin: 7px;
     /* //   // left: 5, */
   /* alignItems: 'right'; */
   /* background-color: bgColor; */
   border-radius: 50%;
-  width: 23px;
-  height: 23px;
+  width: 60px;
+  height: 60px;
 }
 
 .kbd-navigation .square:focus {
