@@ -137,7 +137,10 @@ function Circle(props) {
     render() {
       const winner = calculateWinner(this.state.squares);
       let status;
-      if (winner){
+      if (winner === "Tie") {
+        status = 'Game over: Tie';
+      }
+      else if (winner){
         status = 'Winner: ' + winner;
       }
       else{
@@ -307,8 +310,21 @@ function Circle(props) {
    return null;
   }
 
+  function tie(squares) {
+    let ret = "Tie";
+    for (let i = 0; i < squares.length; i++) {
+      if (!squares[i]) {
+        ret = null;
+      }
+    }
+    return ret
+  }
+
   function calculateWinner(squares) {
     let winner;
+    if (tie(squares)) {
+      winner = tie(squares);
+    }
     if (winnerHorizontal(squares)){
       winner = winnerHorizontal(squares);
     }
