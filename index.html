@@ -3,7 +3,7 @@
   <head>
     <link rel="stylesheet" href="src/index.css">
     <meta charset="UTF-8" />
-    <title>Hello World</title>
+    <title>Bettily Connect 4</title>
     <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
       
@@ -11,7 +11,11 @@
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   </head>
   <body>
-    <div id="root"></div>
+    <div>
+      <!-- <h2 align="center">Connect 4</h2> -->
+      <!-- <h3>Created by Betty Yee & Emily Ma</h1> -->
+    </div>
+    <div id="root" align="center"></div>
     <script type="text/babel">
       function Square(props) {
   return (
@@ -148,7 +152,10 @@ function Circle(props) {
     render() {
       const winner = calculateWinner(this.state.squares);
       let status;
-      if (winner){
+      if (winner === "Tie") {
+        status = 'Game over: Tie';
+      }
+      else if (winner){
         status = 'Winner: ' + winner;
       }
       else{
@@ -318,8 +325,21 @@ function Circle(props) {
    return null;
   }
 
+  function tie(squares) {
+    let ret = "Tie";
+    for (let i = 0; i < squares.length; i++) {
+      if (!squares[i]) {
+        ret = null;
+      }
+    }
+    return ret
+  }
+
   function calculateWinner(squares) {
     let winner;
+    if (tie(squares)) {
+      winner = tie(squares);
+    }
     if (winnerHorizontal(squares)){
       winner = winnerHorizontal(squares);
     }
