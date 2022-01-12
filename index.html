@@ -87,6 +87,7 @@ function Circle(props) {
     handleClick(i) {
       const squares = this.state.squares.slice();
       if (calculateWinner(squares)) {
+        alert(calculateWinner(squares) + " wins!");
         return;
       }
 
@@ -166,10 +167,10 @@ function Circle(props) {
       if (winner === "Tie") {
         status = 'Game over: Tie';
       }
-      else if (winner){
-        status = 'Winner: ' + winner;
-      }
-      else{
+      // else if (winner){
+      //   status = 'Winner: ' + winner;
+      // }
+      else if (!winner) {
         status = 'Next player: ' + (this.state.redIsNext ? 'Red' : 'Yellow');
       }
   
